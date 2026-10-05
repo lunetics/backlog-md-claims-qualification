@@ -1,4 +1,31 @@
-# The qualification archives of revision 2c8d849
+# Qualification of the claims feature of Backlog.md, revision 2c8d849
+
+The claims feature of [lunetics/Backlog.md](https://github.com/lunetics/Backlog.md), branch `claims-native`, revision
+`2c8d849`, was exercised end to end against real Git servers from three clients at once: a plain Git server reached
+over `git://`, HTTP, HTTPS and OpenSSH, and a Gitea server over HTTP and its built-in SSH. The servers held pushes so
+that writes really overlapped, a network proxy cut, stalled, slowed and throttled the connection, single clients ran
+with a shifted clock, and the size went up to 1000 claims. All 339 checks in four stages passed, with Git 2.47.3,
+OpenSSH 10.0p2, Gitea 1.24.7 and Bun 1.3.14. Linux containers only; macOS, Windows, NFS and other Git hosts and
+versions were not tested.
+
+The commits after `2c8d849` on the fork's branch change documentation only, so the claim code of the head is the
+tested code. In a clone of the fork this command prints nothing:
+
+```sh
+git diff --stat 2c8d849 claims-native -- . ':!*.md'
+```
+
+## Where to read
+
+| file | what it answers |
+| --- | --- |
+| [QUALIFICATION.md](QUALIFICATION.md) | what was tested and with which bounds, and what was not: servers, transports, clocks, sizes |
+| [VERIFICATION.md](VERIFICATION.md) | how the feature was tested over the whole work: method, container runs per commit, the matrix runs, measurements beyond tests |
+| [reports/](reports/README.md) | every check of the matrix, one report per storage format, with the stack and the evaluation explained |
+| the four `.tar.zst` archives, `SHA256SUMS` | the runs themselves, every step and output, sanitised; how to check them is described below |
+| [the fork](https://github.com/lunetics/Backlog.md/tree/claims-native) | the feature, its guide `CLAIMS.md`, the workflow proposals and the known limits |
+
+## Checking the archives
 
 Each bundle is one run of one stage of the qualification matrix on Backlog.md revision `2c8d849`, exactly as the
 driver left it, with three kinds of change: the private key, the Gitea token and the Gitea admin password of that
@@ -14,7 +41,7 @@ outputs and the product tarball are unchanged.
 | `k20c-k20c-native3.tar.zst` | C | `k20c-native3` | 87 of 87 | `14cd87c1d40b91ace7afc7d94c54aa531b3a7c139f1e919f608f657291ae4937` |
 | `k20c-size-k20c-size-native3.tar.zst` | size run | `k20c-size-native3` | 13 of 13 | `4cf0c6548c10eb6a67d40d8288b319b086e3cd3f445bc5ba35b03858edaf8050` |
 
-## 1. Check a bundle
+### 1. Check a bundle
 
 ```sh
 sha256sum -c SHA256SUMS
@@ -24,7 +51,7 @@ cd k20a-k20a-native3 && sha256sum -c --quiet CHECKSUMS.txt
 
 `SHA256SUMS` lists the four bundles. `CHECKSUMS.txt` inside each archive lists every file of that archive.
 
-## 2. What an archive contains
+### 2. What an archive contains
 
 | file | content |
 | --- | --- |
@@ -45,7 +72,7 @@ grep -m1 '^K20-RUN ' k20a-k20a-native3/tests.log | cut -d' ' -f2- | python3 -c '
 
 The product tarball is the same in all four archives (sha256 `0269748e8cbbfb70eb2543624b53a678cdbab5ba88e686a4d3d406dbd8e1342e`).
 
-## 3. The evaluation
+### 3. The evaluation
 
 `EVALUATION.txt` is the output of the evaluator that read the archive: the evidence counts, the versions of the
 stack, the hashes of the ten frozen scenario files against their frozen values, the comparison of every file in
@@ -55,7 +82,7 @@ clocks, the size figures, and the verdict. Every archive ends `problems: 0`, `VE
 identified in the `K20-RUN` line by its sha256, `c44b87ff63364736be8a08bf059685739fd04eaa179ce5e68d82486f157c9221`;
 the evaluator itself is not part of the bundles.
 
-## 4. What was left out or replaced, and why
+### 4. What was left out or replaced, and why
 
 | item | treatment |
 | --- | --- |
