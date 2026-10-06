@@ -117,7 +117,7 @@ sanitised as described in its README.
   sibling read's temporary ref, seen with Git's strict ref checking, failed a claim fetch in 2 to 9 of 1000
   real rows; with the fix 0 of 1000. The fix is in the storage commit.
 - The other direction, a user's own Git command in the same checkout during a claim read: measured twice, with
-  10 to 5010 refs, loose and packed; the result is in [KNOWN-LIMITS.md](https://github.com/lunetics/Backlog.md/blob/claims-native/docs/claims/KNOWN-LIMITS.md).
+  10 to 5010 refs, loose and packed; the result is in [the fork's guide "Claims known limits"](https://github.com/lunetics/Backlog.md/blob/claims-native/backlog/docs/doc-6%20-%20Claims-known-limits.md).
 
 ## Calendar
 
