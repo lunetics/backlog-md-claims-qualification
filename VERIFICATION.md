@@ -119,6 +119,24 @@ sanitised as described in its README.
 - The other direction, a user's own Git command in the same checkout during a claim read: measured twice, with
   10 to 5010 refs, loose and packed; the result is in [the fork's guide "Claims known limits"](https://github.com/lunetics/Backlog.md/blob/claims-native/backlog/docs/doc-6%20-%20Claims-known-limits.md).
 
+## Rebases onto upstream
+
+The tables above describe the series as published on 2026-10-06: head `9a08b07` on upstream `69e7b15`. Since then
+the branch is rebased onto newer upstream releases. Each rebase is measured on the same container harness before it
+is published. The qualification matrix against real Git servers is not rerun: it measured the claim modules, and a
+rebase leaves them byte-identical (the command in the [README](README.md) shows it).
+
+### 2026-10-15: onto upstream `d306c24`, head `f008b14`
+
+- One conflict, in the import lines of `src/cli.ts`. 28 of the 29 commit patches are unchanged; the 29th differs only
+  in that import line and its context.
+- Types and formatting are clean on each of the 30 commits, the 29 rebased ones and one documentation commit.
+- CLI suites 1057 pass, 0 fail; adapter suites 1025 pass, 1 skip, 0 fail; no leftover temporary directories, journal
+  entries or processes.
+- Upstream's CI line in a container: 3624 test cases with 25 failures, the same 25 cases that fail on upstream
+  `d306c24` alone in the same container; the DOM pass 339 pass, 0 fail.
+- The private CI mirror: ubuntu 3610 pass, 14 skip, 0 fail, the DOM pass 339 pass; macOS and Windows green.
+
 ## Calendar
 
 2026-09-24 to 2026-10-05, twelve consecutive days with dated ledger entries, 304 archived container runs in all.

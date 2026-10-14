@@ -8,12 +8,17 @@ with a shifted clock, and the size went up to 1000 claims. All 339 checks in fou
 OpenSSH 10.0p2, Gitea 1.24.7 and Bun 1.3.14. Linux containers only; macOS, Windows, NFS and other Git hosts and
 versions were not tested.
 
-The commits after `2c8d849` on the fork's branch change documentation only, so the claim code of the head is the
-tested code. In a clone of the fork this command prints nothing:
+The fork's branch `claims-native` is rebased onto newer upstream releases. The claim modules and tests the series
+adds stay byte-identical to `2c8d849`; the upstream files the series edits carry upstream's newer code next to the
+claim changes, and the test suites run again on every rebased head ([VERIFICATION.md](VERIFICATION.md#rebases-onto-upstream)).
+In a clone of the fork this command prints nothing:
 
 ```sh
-git diff --stat 2c8d849 claims-native -- . ':!*.md'
+git diff --stat 2c8d849 claims-native -- $(git diff --name-only --diff-filter=A 69e7b15 2c8d849 -- . ':!*.md')
 ```
+
+`2c8d849` stays reachable in the fork through the tag `archive/claims-native-9a08b07`, the head the branch had
+before its first rebase.
 
 ## Where to read
 

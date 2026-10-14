@@ -9,11 +9,11 @@ is qualified by that measurement, with which bounds, and what is not. A sentence
 
 - Backlog.md revision `2c8d849` (`backlog --version` 1.53.0), all three storage formats: `blob`, `tree` and
   `commit-chain`.
-- The commits after the measured revision on the fork's branch `claims-native` change only Markdown
-  documentation: in a clone of the fork, `git diff --stat 2c8d849 claims-native -- . ':!*.md'` prints nothing.
-  The claim modules of the published head are byte-equal to the product archived
-  with every counted run (compared by Git blob hash), so the numbers below describe the shipped code, not an
-  earlier state of it.
+- The fork's branch `claims-native` is rebased onto newer upstream releases. The claim modules and tests the
+  series adds stay byte-equal to the measured revision (the README of this repository gives the command that
+  shows it), and they are byte-equal to the product archived with every counted run (compared by Git blob hash),
+  so the numbers below describe the shipped claim code, not an earlier state of it. The upstream files the series
+  edits carry newer upstream code; the test suites run again on every rebased head (VERIFICATION.md).
 - Linux containers only. macOS, Windows and NFS are unqualified.
 - Three client containers ran the shipped `backlog` CLI, and for some checks `backlog mcp start`, against one
   coordination area. Server hooks held pushes so that concurrent writes really overlapped, a network proxy cut,
