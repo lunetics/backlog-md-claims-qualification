@@ -9,16 +9,22 @@ OpenSSH 10.0p2, Gitea 1.24.7 and Bun 1.3.14. Linux containers only; macOS, Windo
 versions were not tested.
 
 The fork's branch `claims-native` is rebased onto newer upstream releases. The claim modules and tests the series
-adds stay byte-identical to `2c8d849`; the upstream files the series edits carry upstream's newer code next to the
-claim changes, and the test suites run again on every rebased head ([VERIFICATION.md](VERIFICATION.md#rebases-onto-upstream)).
-In a clone of the fork this command prints nothing:
+adds stay byte-identical to `2c8d849`, apart from the files an upstream rename touches, which each rebase names in
+[VERIFICATION.md](VERIFICATION.md#rebases-onto-upstream); the upstream files the series edits carry upstream's newer
+code next to the claim changes, and the test suites run again on every rebased head. In a clone of the fork this
+command prints only the files named there:
 
 ```sh
 git diff --stat 2c8d849 claims-native -- $(git diff --name-only --diff-filter=A 69e7b15 2c8d849 -- . ':!*.md')
 ```
 
+Since the rebase onto v1.54.0 it prints eleven files: one line of claim code and nine test files read the archived
+records of the task corpus where they read the completed ones before, because upstream replaced task completion with
+its archive flow, and one test fixture reloads a record before it rewrites it, because upstream stopped record creation
+from overwriting an existing file. `git diff 2c8d849 claims-native -- src/claims/surface/index.ts` shows the two lines.
+
 `2c8d849` stays reachable in the fork through the tag `archive/claims-native-9a08b07`, the head the branch had
-before its first rebase.
+before its first rebase; `archive/claims-native-f008b14` keeps the head of the first rebase.
 
 ## Where to read
 

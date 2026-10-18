@@ -137,6 +137,39 @@ rebase leaves them byte-identical (the command in the [README](README.md) shows 
   `d306c24` alone in the same container; the DOM pass 339 pass, 0 fail.
 - The private CI mirror: ubuntu 3610 pass, 14 skip, 0 fail, the DOM pass 339 pass; macOS and Windows green.
 
+### 2026-10-18: onto upstream `75e9e972` (v1.54.0 and one commit after it), head `9d4a573c`
+
+- Three conflicts: the import lines of `src/cli.ts`, the import lines and the task routes of `src/server/index.ts`, and
+  `src/test/web-dependency-cleanup-notice.test.tsx`, whose fix for a leaking retry upstream adopted in its own words;
+  the series' first commit now carries only the exit-code fix of `src/test/list-window.test.ts`.
+- Upstream's v1.54.0 replaced task completion with one archive flow (its task BACK-719): the task corpus names its
+  off-board records `archivedTasks` instead of `completedTasks`, and `FileSystem.completeTask` is gone. One line of
+  claim code reads the renamed field (`src/claims/surface/index.ts`, the corpus of `claim install-epoch`, which
+  therefore creates refs for archived tickets too: they keep their IDs under the archive flow, as completed ones did
+  before), and nine test files set up archived tasks where they set up completed ones: `claim-browser-view`,
+  `claim-emergency`, `claim-epoch`, `claim-next`, `claim-next-cli`, `claim-next-git`, `claim-reclaim-git`,
+  `claim-surface-administration` and `claim-surface-git`. The readiness fixture of `claim-next` holds its archived prerequisite in the final status,
+  because under the archive flow an archived prerequisite satisfies its dependents only there.
+- Upstream's v1.54.0 also stopped record creation from overwriting an existing file (its task BACK-732): a task saved
+  without the path it was loaded from is a new record. The twin fixture of `claim-mcp-git` reloads a task before it
+  rewrites its status to Done, where it wrote a fresh task object before; the first container run and the first mirror
+  run of this rebase found this one failure, mcp-g11, and nothing else.
+- The other 70 files the series adds are byte-identical to `2c8d849`.
+- 25 of the 30 commit patches are unchanged; four differ in the lines above and their context, one in context only.
+  A 31st commit names both upstream changes in the README's tested-code sentence.
+- Types (`bun --check`, Bun 1.4.3) and formatting are clean on each of the 31 commits.
+- CLI suites 1095 pass, 0 fail; adapter suites 1025 pass, 1 skip, 0 fail; no leftover temporary directories, journal
+  entries or processes. The lane image runs Bun 1.4.3 now, the version upstream's CI sets.
+- Upstream's CI line in a container: 4181 test cases with 25 failures, the same 25 cases that fail on upstream
+  `75e9e972` alone in the same container (closed stdin, launcher, editor, TUI and MCP-stdio cases); the DOM pass
+  411 pass, 0 fail; no leftover temporary directories, journal entries or processes.
+- The private CI mirror on the head: ubuntu 4167 pass, 14 skip, 0 fail, the DOM pass 411 pass; macOS green; the
+  Windows unit job fails upstream's own archive cases of `id-generation.test.ts` and `auto-commit.test.ts` at the
+  10 s timeout in both attempts (four, then five cases). The same cases pass in upstream's CI on `75e9e972` at
+  5.7 to 9.5 s, and the mirror's Windows runner is slower throughout: 114 and 138 s for the job against
+  upstream's 66 s, and 2.4 times upstream's duration on cases that touch no archive. Upstream `75e9e972` alone,
+  pushed to the mirror's main, fails the same four cases on that runner at the same timeout (474 pass, 4 fail).
+
 ## Calendar
 
 2026-09-24 to 2026-10-05, twelve consecutive days with dated ledger entries, 304 archived container runs in all.
