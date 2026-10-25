@@ -170,6 +170,32 @@ rebase leaves them byte-identical (the command in the [README](README.md) shows 
   upstream's 66 s, and 2.4 times upstream's duration on cases that touch no archive. Upstream `75e9e972` alone,
   pushed to the mirror's main, fails the same four cases on that runner at the same timeout (474 pass, 4 fail).
 
+### 2026-10-25: onto upstream `6f988de0` (v1.55.3), head `a7bf747f`
+
+- One conflict, the JSON paragraph of `src/guidelines/cli-instructions/overview.md`: upstream added `draft list` and
+  `decision list` to the sentence our `--revision` sentences follow; both kept.
+- Upstream's v1.55.3 moved to Bun 1.4.4 (its task BACK-789), whose types report a finished child's `signalCode` as a
+  name or a number. The interrupt fixture of `claim-interrupt` returned it as a string; it now looks a numeric code
+  up in the signal table, as it already did for an exit status 128 + n. The other 69 files the series adds are
+  byte-identical to `2c8d849`; the eleven of the previous rebase are unchanged.
+- Upstream's security series BACK-786 changes `src/git/operations.ts` only inside its own fetch path (skip when the
+  remote is absent, no submodule recursion, per-call environment merge). The claim adapters spawn Git themselves and
+  import only `isGitRepository`, so the claim transports are untouched.
+- 29 of the 31 commit patches are unchanged; two differ in the lines above and their context.
+- Types (`bun --check`, Bun 1.4.3 locally) and formatting are clean on each of the 31 commits.
+- CLI suites 1096 pass, 0 fail; adapter suites 1025 pass, 1 skip, 0 fail; no leftover temporary directories, journal
+  entries or processes. The lane image runs Bun 1.4.4 and carries upstream's dependency patches, as upstream's CI does.
+- Upstream's CI line in a container: 4238 test cases with 33 failures, the same 33 cases that fail on upstream
+  `6f988de0` alone in the same container (the launcher signal cases of its v1.55.0 among them, editor, TUI and
+  launcher cases as before); the DOM pass 411 pass, 0 fail; no leftover temporary directories, journal entries
+  or processes.
+- The private CI mirror on the head: ubuntu 4224 pass, 14 skip, 0 fail on the second attempt (the first lost one
+  claim case, `rsm-07`, to its fixture's 10 s event window at 11.6 s on the shared runner; it takes 2.1 to 2.8 s in
+  every container run and 2.3 s on the second attempt), the DOM pass 411 pass; macOS green; the Windows unit job fails two upstream cases at the
+  10 s timeout in its first attempt, the archive auto-commit case of the previous rebase and the submodule fetch case
+  of v1.55.3's BACK-786 (both pass in upstream's CI on `a9d4ab6f` at 7.7 and 5.2 s; the mirror's runner took 122 s
+  for the job against upstream's 62 s), and passes on the second attempt: the runner finding of 2026-10-18.
+
 ## Calendar
 
 2026-09-24 to 2026-10-05, twelve consecutive days with dated ledger entries, 304 archived container runs in all.

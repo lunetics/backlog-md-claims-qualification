@@ -18,10 +18,12 @@ command prints only the files named there:
 git diff --stat 2c8d849 claims-native -- $(git diff --name-only --diff-filter=A 69e7b15 2c8d849 -- . ':!*.md')
 ```
 
-Since the rebase onto v1.54.0 it prints eleven files: one line of claim code and nine test files read the archived
-records of the task corpus where they read the completed ones before, because upstream replaced task completion with
-its archive flow, and one test fixture reloads a record before it rewrites it, because upstream stopped record creation
-from overwriting an existing file. `git diff 2c8d849 claims-native -- src/claims/surface/index.ts` shows the two lines.
+Since the rebase onto v1.55.3 it prints twelve files: one line of claim code and nine test files read the archived
+records of the task corpus where they read the completed ones before, because upstream's v1.54.0 replaced task
+completion with its archive flow; one test fixture reloads a record before it rewrites it, because v1.54.0 stopped
+record creation from overwriting an existing file; and one test helper reads a child's signal code by type, because
+Bun 1.4.4 (v1.55.3) types it as a name or a number. `git diff 2c8d849 claims-native -- src/claims/surface/index.ts`
+shows the two lines of claim code.
 
 `2c8d849` stays reachable in the fork through the tag `archive/claims-native-9a08b07`, the head the branch had
 before its first rebase; `archive/claims-native-f008b14` keeps the head of the first rebase.
